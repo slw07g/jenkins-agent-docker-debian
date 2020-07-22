@@ -1,6 +1,8 @@
-# Update the JENKINS_TUNNEL and JENKINS_URL environment variables below with the appropriate values
+# Update the env_file to the absolute path to the .env file - avoid using relative paths
+# Update the environment variable values in the .env file
 #
-# Run with docker-compose run -d  --name jenkins-agent jenkins <secret> <node_name>
+# Test: docker-compose up 
+# Run: docker-compose up -d
 # Stop: docker stop jenkins-agent
 # Remove:  docker rm jenkins-agent
 
@@ -10,7 +12,10 @@ services:
           container_name: jenkins-agent
           image: jenkins-agent
           restart: always
+          env_file: /home/username/jenkins-agent-docker-debian/.env # Absolute path to .env file
           environment:
-            - JENKINS_TUNNEL=host:port # Manage Jenkins >> Configure Global Security >> Agents >> "TCP Port for Inbound Agents"
-            - JENKINS_URL=https://your_jenkins_domain  # Jenkins url
-          entrypoint: /usr/local/bin/jenkins-agent  
+            - JENKINS_TUNNEL=$JENKINS_TUNNEL
+            - JENKINS_URL=$JENKINS_URL
+            - JENKINS_SECRET=$JENKINS_SECRET
+            - JENKINS_NODE_NAME=$JENKINS_NODE_NAME
+          entrypoint: java -cp "/usr/share/jenkins/agent.jar" hudson.remoting.jnlp.Main -headless -tunnel "$JENKINS_TUNNEL" -url "$JENKINS_URL"  "$JENKINS_SECRET" "$JENKINS_NODE_NAME" 
