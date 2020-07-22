@@ -1,0 +1,16 @@
+# Update the JENKINS_TUNNEL and JENKINS_URL environment variables below with the appropriate values
+#
+# Run with docker-compose run -d  --name jenkins-agent jenkins <secret> <node_name>
+# Stop: docker stop jenkins-agent
+# Remove:  docker rm jenkins-agent
+
+version: '3'
+services:
+        jenkins:
+          container_name: jenkins-agent
+          image: jenkins-agent
+          restart: always
+          environment:
+            - JENKINS_TUNNEL=host:port # Manage Jenkins >> Configure Global Security >> Agents >> "TCP Port for Inbound Agents"
+            - JENKINS_URL=https://your_jenkins_domain  # Jenkins url
+          entrypoint: /usr/local/bin/jenkins-agent  
