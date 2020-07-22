@@ -4,16 +4,7 @@ Quickly set up a debian jenkins node with docker
 1. Clone this repository
 2. In a terminal, `cd` into the directory containing `Dockerfile` and `docker-compose.yml`. 
 3. Build the docker image by running the command: `docker build -t jenkins-agent .`
-4. Set the environment variables `JENKINS_URL`, `JENKINS_TUNNEL`, `JENKINS_SECRET`, and `JENKINS_NODE_NAME`. Example:
-```
-    export JENKINS_URL=https://jenkins_domain
-    export JENKINS_TUNNEL=jenkins_domain:50000
-    export JENKINS_SECRET=abcdefghijklmnopqrstuvwxyz # The secret provided by Jenkins
-    export JENKINS_NODE_NAME=jenkins-agent-01 # The node name as set in Jenkins
-```
-
-If you're comfortable doing so, you could technically modify the Dockerfile to do this (appending it the export commands to `/home/jenkins/.bashrc`)
-
+4. Modify the .env file to set the environment variables `JENKINS_URL`, `JENKINS_TUNNEL`, `JENKINS_SECRET`, and `JENKINS_NODE_NAME` to their correct values. 
 5. Start the agent using `docker-compose up` if successful, output should look like the following and you should see the node checked in in the Jenkins UI.
 Then push ctrl+c and run `docker-compose up -d` so that it runs as a daemon.
 ```
