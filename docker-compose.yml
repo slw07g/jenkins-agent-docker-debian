@@ -1,10 +1,12 @@
 # Update the env_file to the absolute path to the .env file - avoid using relative paths
 # Update the environment variable values in the .env file
+# Create a folder for jenkins_home and update the path in the volumes section (use full path, no relative paths)
 #
 # Test: docker-compose up 
 # Run: docker-compose up -d
 # Stop: docker stop jenkins-agent
 # Remove:  docker rm jenkins-agent
+
 
 version: '3'
 services:
@@ -19,3 +21,7 @@ services:
             - JENKINS_SECRET=$JENKINS_SECRET
             - JENKINS_NODE_NAME=$JENKINS_NODE_NAME
           entrypoint: java -cp "/usr/share/jenkins/agent.jar" hudson.remoting.jnlp.Main -headless -tunnel "$JENKINS_TUNNEL" -url "$JENKINS_URL"  "$JENKINS_SECRET" "$JENKINS_NODE_NAME" 
+          volumes:
+            - /home/USERNAME/jenkins_home:/home/jenkins:rw
+            - /var/run/docker.sock:/var/run/docker.sock:rw
+
